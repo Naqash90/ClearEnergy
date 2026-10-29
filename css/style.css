@@ -1,0 +1,870 @@
+/* CLEARENERGY – LOOK OF THE WEBSITE
+   1. Colours
+   2. Top menu
+   3. Pages (the 5 panels)
+   4. Home
+   5. Energy tips
+   6. Renewable energy
+   7. Calculator
+   8. About
+   9. Phone / tablet / big screen */
+
+/* ===== 1. COLOURS – change here = changes on the whole site ===== */
+:root {
+  --accent: #c8eb61;        /* lime: buttons, arrow, highlights */
+  --lime-box: rgba(210, 239, 123, .9); /* soft lime boxes: Home, Tips, Renewable, Calculator, About */
+  --ink: #222423;           /* dark: text, icons, dark button */
+  --muted: #606662;         /* grey: small descriptions */
+  --paper: #f6f6f4;         /* page background */
+  --container: 1600px;      /* max width of the top menu */
+  --content-width: 76rem;   /* max width of the boxes */
+  --space: 2.75rem;         /* space on the left and right */
+  --card-gap: 1rem;         /* space between boxes */
+  --card-pad: 1.25rem;      /* space inside boxes */
+  --side: max(var(--space), calc((100vw - var(--container)) / 2 + var(--space))); /* side space on wide screens */
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Aptos", "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid #47752f; outline-offset: 4px; }
+
+h1, h2, h3, h4 { font-family: "Aptos Display", "Segoe UI", Arial, sans-serif; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2 { font-weight: 400; letter-spacing: -.055em; line-height: 1.06; }
+h3 { font-weight: 500; letter-spacing: -.025em; }
+
+.container { width: min(calc(100% - 48px), var(--container)); margin-inline: auto; }
+
+.sr-only,
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.skip-link:focus { position: fixed; z-index: 200; padding: 12px; background: white; }
+
+.disclaimer { margin: .45rem 0 0; color: #525a55; font-size: .7rem; }
+
+/* ===== 2. TOP MENU – logo and links ===== */
+.site-header { position: absolute; top: 1.5rem; left: 0; right: 0; z-index: 10; }
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 5.25rem;
+  padding: .55rem var(--space);
+}
+
+.brand { display: flex; flex: 0 0 auto; align-items: center; gap: .8rem; text-decoration: none; }
+.brand img {
+  width: clamp(13rem, 14vw, 16rem);
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 8px 18px rgba(22, 45, 34, .12));
+}
+
+.menu-toggle { display: none; padding: .6rem; border: 0; border-radius: 12px; background: white; }
+.menu-toggle span[aria-hidden] { display: block; width: 23px; height: 2px; margin: 5px; background: var(--ink); }
+
+.primary-nav {
+  display: flex;
+  gap: .35rem;
+  padding: .45rem;
+  border: 1px solid rgba(58, 76, 67, .16);
+  border-radius: 18px;
+  background: rgba(240, 244, 240, .68);
+  box-shadow: 0 14px 34px rgba(31, 48, 39, .1);
+  -webkit-backdrop-filter: blur(20px) saturate(115%);
+  backdrop-filter: blur(20px) saturate(115%);
+}
+.primary-nav a {
+  padding: .72rem 1rem;
+  border-radius: 12px;
+  color: #46514c;
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: .065em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.primary-nav a:hover { color: var(--ink); background: rgba(255, 255, 255, .34); }
+.primary-nav a.is-active { color: #1f2925; background: rgba(200, 235, 97, .9); box-shadow: 0 7px 18px rgba(83, 111, 48, .14); }
+
+/* ===== 3. PAGES – 5 full-screen pages that slide left / right ===== */
+.page-deck { width: 100%; height: 100svh; overflow: hidden; }
+
+.page-track {
+  display: flex;
+  width: 500%;
+  height: 100%;
+  transition: transform .85s cubic-bezier(.22, .8, .2, 1);
+}
+
+.deck-panel {
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 20%;
+  width: 20%;
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  background: #edf4fa;
+}
+.deck-panel.section { background: var(--paper); }
+
+/* Background photos – change the file name = change the photo */
+.deck-panel::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.deck-panel:not(#home)::before { background-color: #eef5fa; background-position: right center; background-size: auto 100%; }
+#home::before { background-image: url("../assets/bg-home.png"); }
+#energy-tips::before { background-image: url("../assets/bg-tips.png"); }
+#renewable-energy::before { background-image: url("../assets/bg-renewables.png"); }
+#calculator::before { background-image: url("../assets/bg-calculator.png"); }
+#about::before { background-image: url("../assets/bg-about.png"); }
+
+/* Page area with the title and boxes (Tips, Renewable, Calculator, About) */
+.section > .container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  overflow: hidden;
+  padding: 7rem var(--side) 3rem;
+  background: linear-gradient(90deg, rgba(246, 248, 249, .97) 0%, rgba(246, 248, 249, .9) 55%, rgba(246, 248, 249, .18) 82%, transparent 100%);
+}
+#calculator > .container { padding-top: clamp(6.5rem, 8vh, 8rem); padding-bottom: 1.25rem; }
+#calculator h2 { letter-spacing: -.045em; }
+
+.section-heading { width: min(100%, var(--content-width)); margin: 0 auto 1.5rem; text-align: center; }
+.section-heading h2 {
+  margin-bottom: .55rem;
+  font-size: clamp(2.7rem, 4.3vw, 5.25rem);
+  line-height: .95;
+  text-transform: uppercase;
+}
+.section-heading p { max-width: 34rem; margin: 0 auto; color: #4f5b62; font-size: 1.05rem; }
+
+/* See-through box look (Home boxes, tip cards) */
+.hero-summary > div,
+.tip-card {
+  border: 1px solid rgba(58, 76, 67, .14);
+  background: rgba(242, 245, 242, .82);
+  box-shadow: 0 14px 34px rgba(31, 48, 39, .075);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+  backdrop-filter: blur(18px) saturate(115%);
+}
+
+/* ===== 4. HOME – big title, 2 buttons, 3 small boxes ===== */
+.hero-screen {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, .38fr);
+  align-items: end;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  padding: 10rem var(--side) 4rem;
+  background-image: linear-gradient(90deg, rgba(246, 248, 249, .97) 0%, rgba(246, 248, 249, .84) 37%, rgba(246, 248, 249, .04) 68%);
+  background-position: center;
+  background-size: cover;
+}
+
+.hero-copy { align-self: center; max-width: 46rem; }
+.hero-copy h1 { margin-bottom: 1.5rem; font-size: clamp(3.2rem, 5.7vw, 6.8rem); line-height: .94; }
+.hero-copy h1 span { color: #68706b; }
+.hero-text { max-width: 32rem; margin-bottom: 1.6rem; color: var(--muted); font-size: 1.08rem; }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  min-height: 3.5rem;
+  padding: .55rem .6rem .55rem 1.4rem;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: .005em;
+  box-shadow: 0 4px 12px rgba(31, 41, 37, .08);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.button:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(31, 41, 37, .12); }
+.button:active { transform: translateY(0); }
+.button > i { width: auto; font-size: 1.05rem; }
+
+.button-primary { background: var(--ink); color: white; }
+.button-primary > i { color: var(--accent); }
+.button-arrow {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-left: .35rem;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--ink);
+  transition: transform .2s ease;
+}
+.button-arrow i { width: auto; font-size: .9rem; }
+.button-primary:hover .button-arrow { transform: translateX(3px); }
+
+.button-secondary { padding-right: 1.4rem; border-color: rgba(58, 76, 67, .12); background: white; color: var(--ink); }
+.button-secondary > i { color: var(--ink); }
+
+.hero-summary {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(8rem, 1fr));
+  align-self: end;
+  justify-self: end;
+  gap: var(--card-gap);
+  width: min(100%, 46rem);
+}
+.hero-summary > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 7.5rem;
+  padding: var(--card-pad);
+  border-radius: 18px;
+  text-align: center;
+}
+.hero-summary .accent { background: var(--lime-box); }
+.hero-summary strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  width: 100%;
+  font-size: 2.15rem;
+  font-weight: 700;
+}
+.hero-summary strong i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
+  color: #26352c;
+  font-size: 2.35rem;
+}
+.hero-summary span { display: block; width: 100%; margin-top: .55rem; color: var(--muted); font-size: .9rem; }
+
+/* ===== 5. ENERGY TIPS – 6 cards ===== */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: var(--card-gap);
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+}
+
+.tip-card {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-content: center;
+  align-items: center;
+  gap: .35rem 1.15rem;
+  height: 100%;
+  min-height: 10rem;
+  padding: 1.35rem;
+  border-radius: 14px;
+}
+.tip-card:nth-child(3n+1) { background: var(--lime-box); }
+.tip-card:nth-child(3n+2) { background: rgba(218, 228, 222, .82); }
+
+.tip-icon {
+  display: grid;
+  place-items: center;
+  width: 4.75rem;
+  height: 4.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .48);
+  color: #294f3a;
+  font-size: 2.25rem;
+}
+.tip-card:nth-child(3n+2) .tip-icon { background: #eef1e9; }
+.tip-card:nth-child(3n) .tip-icon { background: #e1efcc; }
+
+.tip-content { min-width: 0; }
+.tip-content h3 { margin: 0; font-size: 1.4rem; line-height: 1.05; }
+.tip-content p { margin: .15rem 0 0; color: var(--muted); font-size: .88rem; line-height: 1.35; }
+
+/* ===== 6. RENEWABLE ENERGY – Solar, Wind, Hydropower ===== */
+.renewable-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--card-gap);
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+}
+
+.renewable-card {
+  --renewable-panel: rgba(248, 249, 248, .94);
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  height: 100%;
+  min-height: 25rem;
+}
+.renewable-card:nth-child(2) { --renewable-panel: var(--lime-box); }
+.renewable-card:nth-child(3) { --renewable-panel: rgba(212, 225, 229, .94); }
+
+.renewable-main,
+.renewable-card dl div {
+  border: 1px solid rgba(255, 255, 255, .72);
+  background: var(--renewable-panel);
+  box-shadow: 0 12px 28px rgba(31, 48, 56, .08);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+}
+
+.renewable-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: calc(1.25rem + .4375rem) 1.25rem;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.energy-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 7.25rem;
+  margin-bottom: 1rem;
+  color: #436e45;
+  font-size: clamp(3.75rem, 5vw, 5rem);
+  line-height: 1;
+}
+.renewable-card:first-child .energy-icon { color: #9a7421; }
+.renewable-card:last-child .energy-icon { color: #427e91; }
+
+.renewable-card h3 {
+  margin: 0 0 .3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.renewable-main > p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+.renewable-card dl {
+  display: grid;
+  flex: 0 0 10.5rem;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+  height: 10.5rem;
+  margin: 0;
+}
+
+/* Advantage / Limitation boxes */
+.renewable-card dl div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  padding: .9rem .9rem .9rem 3.4rem;
+  border-radius: 11px;
+}
+.renewable-card dt {
+  margin-bottom: .1rem;
+  color: #34443a;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.renewable-card dt i {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  width: auto;
+  font-size: 1.5rem;
+  transform: translateY(-50%);
+}
+.renewable-card dd { margin: 0; color: var(--muted); font-size: .86rem; }
+
+/* ===== 7. CALCULATOR ===== */
+.calc {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: var(--card-gap);
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+}
+
+.calc-card,
+.about-card {
+  min-width: 0;
+  padding: var(--card-pad);
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 14px;
+  background: rgba(248, 249, 248, .94);
+  box-shadow: 0 12px 28px rgba(31, 48, 56, .08);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+}
+.calc-card { display: flex; flex-direction: column; gap: .75rem; }
+.calc-results { background: rgba(232, 238, 234, .94); }
+
+/* Small titles: CHOOSE A DEVICE, YOUR RESULT, SEE YOUR SAVING, TEAM, SOURCES */
+.calc-step h3,
+.calc-saving h4,
+.about-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.calc-step { display: flex; align-items: center; gap: .7rem; }
+.calc-step > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--lime-box);
+  color: #26352c;
+  font-size: .9rem;
+  font-weight: 800;
+}
+.calc-step h3 { flex: 1 1 auto; }
+
+.calc-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .75rem;
+  border: 1px solid rgba(58, 76, 67, .18);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .7);
+  color: var(--ink);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.calc-reset:hover { background: var(--lime-box); }
+.calc-reset i { width: auto; }
+
+/* Device tiles: LED, TV, Laptop, Heater, Other */
+.calc-devices {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .5rem;
+  min-width: 0;
+  margin: 0 0 .25rem;
+  padding: 0;
+  border: 0;
+}
+.calc-device {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .15rem;
+  padding: .7rem .4rem .6rem;
+  border: 1px solid rgba(58, 76, 67, .12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .72);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.calc-device:hover { border-color: rgba(58, 76, 67, .3); transform: translateY(-2px); }
+.calc-device input { position: absolute; opacity: 0; pointer-events: none; }
+.calc-device i { width: auto; margin-bottom: .2rem; color: var(--ink); font-size: 1.45rem; }
+.calc-device span { color: var(--ink); font-size: .82rem; font-weight: 700; line-height: 1.15; }
+.calc-device small { color: var(--muted); font-size: .7rem; }
+.calc-device:has(input:checked) { border-color: var(--ink); background: var(--lime-box); box-shadow: 0 6px 16px rgba(31, 41, 37, .12); }
+.calc-device:has(input:checked) small { color: var(--ink); }
+.calc-device:has(input:focus-visible) { outline: 3px solid #47752f; outline-offset: 3px; }
+
+/* Sliders and number boxes */
+.calc-controls { display: grid; gap: .5rem; }
+.calc-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6.5rem;
+  align-items: center;
+  gap: .3rem .9rem;
+  padding: .6rem .8rem;
+  border: 1px solid rgba(58, 76, 67, .1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .72);
+}
+.calc-control label { display: flex; align-items: center; gap: .5rem; font-size: .85rem; font-weight: 700; }
+.calc-control label i { width: 1.1rem; font-size: .95rem; }
+
+.number-unit {
+  display: flex;
+  grid-row: 1 / 3;
+  grid-column: 2;
+  align-items: center;
+  min-height: 2.5rem;
+  border: 1px solid rgba(55, 91, 68, .18);
+  border-radius: 9px;
+  background: rgba(232, 240, 234, .92);
+}
+.number-unit input {
+  width: 100%;
+  min-width: 0;
+  padding: .4rem .5rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: right;
+}
+.number-unit span { padding-right: .7rem; color: var(--muted); font-size: .7rem; white-space: nowrap; }
+
+.calc input[type=range] {
+  grid-column: 1;
+  width: 100%;
+  height: 1.5rem;
+  margin: 0;
+  appearance: none;
+  border-radius: 99px;
+  background: linear-gradient(to right, var(--ink) 0 var(--fill, 50%), #d9e1dc var(--fill, 50%) 100%) center / 100% 8px no-repeat;
+  cursor: pointer;
+}
+.calc input[type=range]::-webkit-slider-thumb {
+  width: 22px;
+  height: 22px;
+  appearance: none;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  background: var(--lime-box);
+  box-shadow: 0 3px 9px rgba(25, 50, 36, .26);
+}
+.calc input[type=range]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+  background: var(--lime-box);
+  box-shadow: 0 3px 9px rgba(25, 50, 36, .26);
+}
+.calc-note { margin: 0; color: var(--muted); font-size: .76rem; }
+
+/* Result: cost each month + 4 small results */
+.calc-output { display: grid; gap: .5rem; }
+.calc-total { padding: .9rem 1rem; border-radius: 12px; background: var(--lime-box); box-shadow: 0 8px 20px rgba(31, 41, 37, .1); }
+.calc-total > span { display: block; color: var(--ink); font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.calc-total strong {
+  display: block;
+  margin: .1rem 0 .2rem;
+  color: #1f2925;
+  font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
+  font-size: clamp(2.4rem, 3.4vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.calc-total p { margin: 0; color: #3d4a41; font-size: .74rem; line-height: 1.35; }
+
+.calc-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.calc-stats > div { padding: .55rem .75rem; border: 1px solid rgba(58, 76, 67, .1); border-radius: 10px; background: rgba(255, 255, 255, .72); }
+.calc-stats span { display: block; color: var(--muted); font-size: .72rem; font-weight: 650; }
+.calc-stats strong { display: block; font-family: "Aptos Display", "Segoe UI", Arial, sans-serif; font-size: 1.05rem; }
+
+/* See your saving: bars + "You save" box */
+.calc-saving { display: grid; gap: .5rem; margin-top: auto; padding-top: .75rem; border-top: 1px solid rgba(58, 76, 67, .14); }
+.calc-saving h4 { display: flex; align-items: center; gap: .55rem; font-size: .95rem; }
+.calc-saving h4 i { width: auto; font-size: 1.05rem; }
+.validation-message { margin: -.25rem 0 0; color: #71451a; font-size: .72rem; }
+.validation-message:empty { display: none; }
+
+.calc-bars { display: grid; gap: .4rem; }
+.calc-bars > div { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr) 4.5rem; align-items: center; gap: .6rem; }
+.calc-bars span { color: var(--muted); font-size: .75rem; font-weight: 700; }
+.calc-bars i { display: block; height: .65rem; overflow: hidden; border-radius: 99px; background: rgba(255, 255, 255, .8); }
+.calc-bars b { display: block; width: 0; height: 100%; border-radius: inherit; background: #8a948d; transition: width .25s ease; }
+.calc-bars > div:last-child b { background: var(--ink); }
+.calc-bars strong { font-size: .85rem; text-align: right; }
+
+.calc-difference {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: .3rem;
+  padding: .6rem .8rem;
+  border-radius: 10px;
+  background: var(--lime-box);
+  font-size: .82rem;
+}
+.calc-difference strong { color: #1f2925; font-family: "Aptos Display", "Segoe UI", Arial, sans-serif; font-size: 1.15rem; }
+
+/* ===== 8. ABOUT ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: var(--card-gap);
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+}
+.about-side { display: flex; flex-direction: column; gap: var(--card-gap); min-width: 0; }
+
+.about-card h3 { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+.about-card h3 i { width: auto; font-size: 1.1rem; }
+
+.about-mission { display: flex; align-items: center; gap: 1rem; }
+.about-mission p { margin: 0; color: var(--muted); font-size: .95rem; }
+.about-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  background: rgba(210, 239, 123, .55);
+  font-size: 1.35rem;
+}
+
+.about-sdg { display: flex; align-items: center; gap: 1rem; background: var(--lime-box); }
+.about-sdg > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .55);
+  color: #26352c;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.about-sdg p { margin: 0; }
+.about-sdg strong { display: block; color: #26352c; font-size: 1.02rem; }
+.about-sdg small { display: block; margin-top: .15rem; color: #3d4a41; font-size: .8rem; }
+
+/* Sources: list of links */
+.about-sources { display: flex; flex: 1 1 auto; flex-direction: column; }
+.about-sources ul { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.about-sources a {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem .7rem;
+  border: 1px solid rgba(58, 76, 67, .1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .6);
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease;
+}
+.about-sources a:hover { border-color: rgba(58, 76, 67, .2); background: rgba(210, 239, 123, .45); }
+.about-sources a > i:first-child { flex: 0 0 1.5rem; width: 1.5rem; font-size: 1.05rem; }
+.about-sources a > span { flex: 1 1 auto; min-width: 0; }
+.about-sources a strong { display: block; font-size: .88rem; line-height: 1.2; }
+.about-sources a small { display: block; color: var(--muted); font-size: .74rem; line-height: 1.2; }
+.about-sources a > i:last-child { flex: 0 0 auto; width: auto; color: var(--muted); font-size: .75rem; }
+
+/* Team: 5 people */
+.about-team { display: flex; flex-direction: column; }
+.team-members { display: flex; flex: 1 1 auto; flex-direction: column; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.team-members li {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: .85rem;
+  padding: .6rem .8rem;
+  border: 1px solid rgba(58, 76, 67, .1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .6);
+}
+.team-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--lime-box);
+  color: #26352c;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.team-members li > div { flex: 1 1 auto; min-width: 0; }
+.team-members strong { display: block; margin-bottom: .1rem; font-size: .95rem; }
+.team-members p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.35; }
+.team-role { flex: 0 0 auto; width: auto; font-size: 1.15rem; }
+
+/* ===== 9. PHONE / TABLET / BIG SCREEN ===== */
+
+/* Big monitors: everything bigger */
+@media (min-width: 2300px) {
+  html { font-size: 115%; }
+  :root { --container: 1840px; }
+}
+@media (min-width: 3000px) {
+  html { font-size: 130%; }
+  :root { --container: 2080px; }
+}
+@media (min-width: 3600px) {
+  html { font-size: 160%; }
+  :root { --container: 2560px; }
+}
+
+/* Small laptop screens: smaller spaces so everything fits */
+@media (max-height: 800px) and (min-width: 721px) {
+  :root { --card-gap: .7rem; --card-pad: 1rem; }
+  .section > .container { padding-bottom: .8rem; }
+  #calculator > .container { padding-top: 5.8rem; }
+  .section-heading { margin-bottom: .8rem; }
+  .section-heading h2 { font-size: clamp(2.25rem, 3.6vw, 4rem); }
+  .hero-summary > div { min-height: 5.8rem; }
+
+  .tip-card { grid-template-columns: 3.75rem minmax(0, 1fr); min-height: 7.7rem; padding: 1rem; }
+  .tip-icon { width: 3.75rem; height: 3.75rem; padding: .75rem; }
+  .tip-content h3 { font-size: 1.15rem; }
+  .tip-content p { font-size: .78rem; }
+
+  .renewable-card { min-height: 19rem; }
+  .renewable-main { padding: calc(1rem + .4375rem) 1rem; }
+  .energy-icon { height: 5.25rem; margin-bottom: .65rem; font-size: 3.5rem; }
+  .renewable-card dl { flex-basis: 8.4rem; height: 8.4rem; }
+  .renewable-card dl div { padding-block: .7rem; padding-right: .7rem; }
+
+  .calc-card { gap: .5rem; }
+  .calc-device { padding-block: .5rem .45rem; }
+  .calc-device i { font-size: 1.2rem; }
+  .calc-controls { gap: .4rem; }
+  .calc-control { padding-block: .4rem; }
+  .calc-control .number-unit { min-height: 2.2rem; }
+  .calc-total { padding-block: .65rem; }
+  .calc-total strong { font-size: 2.3rem; }
+  .calc-saving { gap: .4rem; padding-top: .5rem; }
+
+  .about-card h3 { margin-bottom: .5rem; }
+  .about-sources a { padding-block: .35rem; }
+  .team-members li { padding-block: .45rem; }
+  .team-members p { font-size: .76rem; }
+}
+
+/* Tablet (up to 1050px wide) */
+@media (max-width: 1050px) {
+  :root { --space: 1.75rem; }
+  .brand img { width: 12rem; }
+  .tips-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .renewable-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 1050px) and (min-width: 721px) {
+  .primary-nav { gap: .15rem; }
+  .primary-nav a { padding-inline: .65rem; font-size: .7rem; }
+}
+@media (max-width: 900px) {
+  .calc { grid-template-columns: 1fr; }
+}
+
+/* Phone (up to 720px wide): menu button + one column */
+@media (max-width: 720px) {
+  :root { --space: 1.25rem; --card-gap: .75rem; --card-pad: 1rem; }
+  .container { width: calc(100% - 24px); }
+
+  .site-header { top: .6rem; }
+  .nav-wrap { min-height: 4.5rem; padding: .35rem .75rem; }
+  .brand img { width: 10.5rem; }
+  .menu-toggle {
+    display: block;
+    border: 1px solid rgba(255, 255, 255, .68);
+    background: rgba(245, 248, 247, .72);
+    box-shadow: 0 10px 25px rgba(26, 43, 55, .1);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+  .primary-nav {
+    display: none;
+    position: absolute;
+    top: 4.8rem;
+    left: 12px;
+    right: 12px;
+    flex-direction: column;
+    gap: .25rem;
+    padding: .65rem;
+    border-radius: 16px;
+  }
+  .primary-nav.is-open { display: flex; }
+  .primary-nav a { padding: .9rem 1rem; font-size: .78rem; }
+
+  .section > .container { padding: 7rem 1rem 2rem; }
+  .section-heading { margin-bottom: 1rem; }
+
+  .hero-screen { grid-template-columns: 1fr; align-content: end; padding: 7rem 1.25rem 2rem; background-position: 58% top; }
+  .hero-copy h1 { font-size: clamp(2.55rem, 11vw, 3.8rem); }
+  .hero-summary { grid-template-columns: repeat(3, 1fr); }
+  .button { min-height: 3rem; font-size: 1rem; }
+
+  .tips-grid { grid-template-columns: 1fr; }
+  .tip-card { grid-template-columns: 3.75rem minmax(0, 1fr); gap: .25rem .9rem; min-height: 7.5rem; padding: 1rem; }
+  .tip-icon { width: 3.75rem; height: 3.75rem; padding: .75rem; }
+  .tip-content h3 { font-size: 1.15rem; }
+
+  .renewable-card dl { flex-basis: auto; grid-template-rows: repeat(2, minmax(5.25rem, auto)); height: auto; }
+
+  .calc-devices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .calc-control { grid-template-columns: minmax(0, 1fr) 5.75rem; }
+
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-track { transition: none; }
+}

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" role="img" aria-labelledby="title description">
+  <title id="title">ClearEnergy</title>
+  <desc id="description">ClearEnergy wordmark with an electric bolt symbol</desc>
+  <style>
+    /* No animation for people who turn animations off */
+    @media (prefers-reduced-motion: reduce) { .electric { display: none; } }
+  </style>
+  <defs>
+    <!-- Soft light around the spark -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Light inside the bolt: brightest at the bottom edge that is filling -->
+    <linearGradient id="bolt-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fdcff"/>
+      <stop offset=".85" stop-color="#d9f6ff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <!-- Bright band that moves across the text -->
+    <linearGradient id="flash">
+      <stop offset="0" stop-color="#bdefff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#f2fcff"/>
+      <stop offset="1" stop-color="#bdefff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Shapes the light can show through -->
+    <mask id="bolt-shape" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="80">
+      <path d="M43 13 21 39h12l-5 21 23-29H39Z" transform="translate(-22 -9) scale(1.35)" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round"/>
+    </mask>
+    <mask id="text-shape" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="80">
+      <g fill="white" font-family="Aptos Display, Segoe UI, Arial, sans-serif" font-size="37">
+        <text x="59" y="51" font-weight="500" letter-spacing="-1.7">Clear</text>
+        <text x="149" y="51" font-weight="750" letter-spacing="-1.8">Energy</text>
+      </g>
+    </mask>
+  </defs>
+
+  <!-- Bolt -->
+  <g transform="translate(-22 -9) scale(1.35)" stroke-linejoin="round">
+    <path d="M43 13 21 39h12l-5 21 23-29H39Z" fill="#1f2925" stroke="#1f2925" stroke-width="1.5"/>
+  </g>
+
+  <!-- Text -->
+  <g fill="#1f2925" font-family="Aptos Display, Segoe UI, Arial, sans-serif" font-size="37">
+    <text x="59" y="51" font-weight="500" letter-spacing="-1.7">Clear</text>
+    <text x="149" y="51" font-weight="750" letter-spacing="-1.8">Energy</text>
+  </g>
+
+  <!-- ELECTRIC EFFECT (one 5s loop): 1 lightning strike, 2 spark, 3 light across the text -->
+  <g class="electric">
+    <!-- 1. Lightning strike: the bolt fills top → bottom very fast, then goes out -->
+    <rect x="0" y="7" width="52" height="0" fill="url(#bolt-light)" mask="url(#bolt-shape)">
+      <animate attributeName="height" values="0;0;67;67" keyTimes="0;.1;.124;1" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.16;.24;1" dur="5s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- 2. Small spark jumps from the bolt to the text -->
+    <path d="M47 33 51 30 53 35 58 32" fill="none" stroke="#e6f9ff" stroke-width="1.3" stroke-linecap="round"
+          stroke-linejoin="round" opacity="0" filter="url(#glow)">
+      <animate attributeName="opacity" values="0;0;1;.3;1;0;0" keyTimes="0;.17;.18;.19;.2;.21;1" dur="5s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- 3. Light passes through the letters from left to right -->
+    <rect x="-10" y="0" width="70" height="80" fill="url(#flash)" mask="url(#text-shape)">
+      <animate attributeName="x" values="-10;-10;300;300" keyTimes="0;.19;.4;1" dur="5s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+</svg>
